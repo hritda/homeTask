@@ -26,14 +26,14 @@ const Home = () => {
       headers: headers,
     };
     fetch(`http://localhost:1000/api/v2/projects/${projectId}`, requestOptions)
-    .then((response) => response.json())
-    .then((data: Message) => {
-      console.log(data.message);
-      setRefetch(!refetch);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => response.json())
+      .then((data: Message) => {
+        console.log(data.message);
+        setRefetch(!refetch);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     let payload = {
@@ -52,7 +52,7 @@ const Home = () => {
     fetch(`http://localhost:1000/api/v2/projects`, requestOptions)
       .then((response) => response.json())
       .then((data: IProject) => {
-        console.log(data);
+       
         setRefetch(!refetch);
       })
       .catch((error) => {
@@ -72,7 +72,6 @@ const Home = () => {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       const token = JSON.parse(localStorage.getItem("token")!);
-      console.log(token);
       headers.append("Authorization", token);
 
       const requestOptions = {
@@ -83,7 +82,10 @@ const Home = () => {
         .then(async (response) => await response.json())
         .then((data: IProjectResponse) => {
           console.log(data.projects);
-          data.projects && setProjects(data.projects);
+          if(data.projects) {setProjects(data.projects);}
+          else{
+            setProjects([]);
+          }
         })
         .catch((err) => console.log(err));
     } else {
@@ -140,7 +142,7 @@ const Home = () => {
                   key={project._id}
                   className=" d-flex justify-content-around list-group-item"
                 >
-                  <Link style={{ flex: "0.5" }} to={`/projects/${project._id}`}>
+                  <Link style={{ flex: "0.5" }} to={{pathname:`/projects/${project._id}`}} state={{ title: project.title}}>
                     <span>{project.title}</span>
                   </Link>
                   <Link to={`/titleForm/${project._id}`}>

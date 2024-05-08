@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import download from "downloadjs";
 import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams, useLocation } from "react-router-dom";
 import OutletContextType from "../types/OutletContextType";
 import { ITask, ITaskResponse } from "../types/Tasks";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -11,9 +12,12 @@ type Inputs = {
 };
 
 const TodoList = () => {
+  let projectTitle:string = "";
+  const location = useLocation();
   const { isLoggedIn } = useOutletContext<OutletContextType>();
   let { id } = useParams();
-  const [list, setList] = useState<ITask[]>([]);
+  // const [list, setList] = useState<ITask[]>([]);
+  const [project, setProject] = useState<ITaskResponse>();
   const [selectedTask, setSelectedTask] = useState<ITask | undefined | null>(
     null
   );
@@ -124,8 +128,41 @@ const TodoList = () => {
     }
   };
 
+  const generateSummary = () => {
+    const pendingTasks = project?.todos?.filter(
+      (task) => task.status === "pending"
+    );
+    const completedTasks = project?.todos?.filter(
+      (task) => task.status === "completed"
+    );
+    const totalTasks = project?.todos?.length?? 0;
+    const completedCount = completedTasks?.length?? 0;
+    const pendingTaskList = pendingTasks
+      ?.map((task) => ` + [ ] ${task?.description}`)
+      .join("\n")??"";
+    const completedTaskList = completedTasks
+      ?.map((task) => `+ [x] ${task?.description}`)
+      .join("\n")??"";
+
+    const markdownContent =
+      `# ${project?.title?? projectTitle}\n\nSummary: ${completedCount} / ${totalTasks} completed\n\n` +
+      `## Pending Tasks\n${pendingTaskList}\n\n` +
+      `## Completed Tasks\n${completedTaskList}`;
+
+    return markdownContent;
+  };
+
+  // Function to handle export button click
+  const handleExportClick = () => {
+    const markdownContent = generateSummary();
+    console.log(markdownContent);
+    const filename = `${project?.title ?? projectTitle}.md`;
+    download(markdownContent, filename, "text/markdown");
+  };
   useEffect(() => {
+    console.log("REFECT")
     if (isLoggedIn === true) {
+      console.log("triggering useeffect in todo list component");
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       const token = JSON.parse(localStorage.getItem("token")!);
@@ -139,8 +176,13 @@ const TodoList = () => {
       fetch(`http://localhost:1000/api/v2/projects/${id}`, requestOptions)
         .then(async (response) => await response.json())
         .then((data: ITaskResponse) => {
-          console.log(data.tasks);
-          data.tasks && setList(data.tasks);
+          if (data?._id) {
+            setProject(data);
+          } else{
+            setProject(undefined);
+            const message = data as Message;
+            projectTitle = message?.message ?? "" ;
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -158,6 +200,9 @@ const TodoList = () => {
         <>
           <span className="d-flex justify-content-between my-3">
             <h2>Your Task list</h2>
+            <button onClick={handleExportClick} className="btn btn-primary">
+              Export summary
+            </button>
             <button
               className="btn btn-primary"
               onClick={() => {
@@ -202,7 +247,7 @@ const TodoList = () => {
           </Modal>
 
           <ul className="list-group">
-            {list?.map((task) => {
+            {project?.todos?.map((task) => {
               return (
                 <li
                   key={task._id}
@@ -211,9 +256,9 @@ const TodoList = () => {
                   <span style={{ flex: "0.5" }}>{task.description}</span>
                   <span
                     className={
-                      task.status === 'pending'
-                        ? 'badge bg-warning my-2'
-                        : 'badge bg-success my-2'
+                      task.status === "pending"
+                        ? "badge bg-warning my-2"
+                        : "badge bg-success my-2"
                     }
                   >
                     {task.status}

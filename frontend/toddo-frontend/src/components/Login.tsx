@@ -21,7 +21,14 @@ const Login = () => {
       body: JSON.stringify(payload)
     }
     fetch(`http://localhost:1000/api/v1/login`,requestOptions)
-    .then((response)=>response.json())
+    .then((response)=>{
+      if(response.ok){
+      return response.json();}
+      else {
+        alert("invalid credentials , please try again");
+        return ;
+      } ;
+  })
     .then((data:any)=>{
       localStorage.setItem('token',JSON.stringify(data.token));
       alert("You have logged in!");

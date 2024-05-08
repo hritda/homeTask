@@ -13,6 +13,9 @@ const isAuthenticated = async (req, res, next) => {
     if(!userToken){
         return res.status(401).json({ error: 'Invalid token' });
     }
+    if(userToken.is_active == 0){
+      return res.status(401).json({ error: 'session expired! please login again' });
+    }
     const user = userToken.user ;
     req.user = user ;
       next();

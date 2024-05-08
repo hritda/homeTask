@@ -9,6 +9,7 @@ import ErrorPage from "./components/ErrorPage";
 import TodoList from "./components/TodoList";
 import TitleForm from "./components/TitleForm";
 import TaskForm from "./components/TaskForm";
+import Register from "./components/Register";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -20,6 +21,7 @@ const MainApp = () => (
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
           <Route path="*" element={<ErrorPage />} />
           <Route path="projects/:id" element={<TodoList/>} />
           <Route path="titleForm/:id" element={<TitleForm/>} />

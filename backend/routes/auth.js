@@ -10,12 +10,38 @@ router.post("/register", async (req, res) => {
         // const hashPassword = bcrypt.hashSync(password);
         // console.log(hashPassword);
         const user = new User({ email, username, password });
-        await user.save().then(() => res.status(200).json({ user: user }));
+        await user.save().then(() => res.status(200).json(user));
     } catch (err) {
         res.status(400).json({ message: " User already exists" });
     }
 });
 
+router.put("/logout", authenticated,async (req, res) => {
+
+    const authHeader = req.headers['authorization'];
+    const userToken = await UserToken.findOneAndUpdate(
+        {token: authHeader},
+        {is_active: 0},
+        {new: true}).then(
+        (updatedToken)=>{
+                if (updatedToken) {
+                res.status(200).json({message: "logged out successfully"})
+                  // Document updated successfully
+                } else {
+                res.status(400).json({message: "No auth token found"})
+                  // Handle case where document is not found
+                }
+        }
+        ).catch((err)=>{
+            res.status(400).json({message: err});
+        });
+
+
+    
+
+
+
+})
 router.post("/login", async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });

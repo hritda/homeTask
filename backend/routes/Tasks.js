@@ -12,9 +12,9 @@ router.get("/projects/:id",isAuthenticated,async (req,res)=>{
    Project.findById(projectId).populate('todos')
         .then((project)=>{
             if(project.todos.length>0){
-            res.status(200).json({tasks: project.todos});
+            res.status(200).json(project);
             } else {
-              res.status(200).json({message:"no tasks found for this project"})
+              res.status(200).json({message:project.title})
             }
           }).catch((err)=>{
           res.status(400).json({error: err});

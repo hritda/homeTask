@@ -1,5 +1,10 @@
 export interface ITaskResponse {
-    tasks?: ITask[];
+    _id?:         string;
+    title?:       string;
+    todos?:       ITask[];
+    user?:        string;
+    createdDate?: Date;
+    __v?:         number;
 }
 
 export interface ITask {

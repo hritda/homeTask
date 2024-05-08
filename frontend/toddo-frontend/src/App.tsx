@@ -4,13 +4,34 @@ import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import OutletContextType from "./types/OutletContextType";
+import Message from "./types/Message";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
+  const logout = ()=>{
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    const token = JSON.parse(localStorage.getItem("token")!);
+    headers.append("Authorization", token);
+    const requestOptions = {
+      method: "PUT",
+      headers: headers,
+    };
 
+    fetch(`http://localhost:1000/api/v1/logout`,requestOptions)
+    .then((response)=> response.json())
+    .then((data :Message) =>{
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+
+  }
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if(token==null){
+    const token = localStorage.getItem("token");
+    if(token===null){
       setIsLoggedIn(false);
 
     } else {
@@ -36,7 +57,7 @@ function App() {
               )}
             </>
           ) : (
-            <span className="btn btn-danger "> Logout </span>
+            <span onClick = {logout} className="btn btn-danger "> Logout </span>
           )}
         </div>
       </div>
