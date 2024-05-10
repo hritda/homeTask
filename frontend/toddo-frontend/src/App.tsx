@@ -1,8 +1,7 @@
 import React from "react";
 import "./App.css";
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Outlet, Link, useLocation  } from "react-router-dom";
+import { useState, useEffect } from "react";
 import OutletContextType from "./types/OutletContextType";
 import Message from "./types/Message";
 function App() {

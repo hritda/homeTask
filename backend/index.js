@@ -3,6 +3,7 @@ const app = express();
  const auth = require("./routes/auth");
  const project = require("./routes/project");
  const tasks = require("./routes/Tasks");
+ require('dotenv').config();
 require('./conn/conn');
 
 app.use(express.json());

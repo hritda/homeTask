@@ -25,6 +25,7 @@ const Register = () => {
 
     fetch("http://localhost:1000/api/v1/register", requestOptions)
       .then((resp) => {
+        console.log("REPOSNE:", resp)
         if(!resp.ok){
             throw new Error("the user already exists");
         }
@@ -35,11 +36,9 @@ const Register = () => {
         console.log(user.user);
         alert("account has been created! Please login to continue");
         navigate("/login");
-        return ;
       })
       .catch((err)=>{
         alert(err);
-        return ;
       })
   };
   const handleChange = (
@@ -91,7 +90,7 @@ const Register = () => {
         />
       </div>
       <button type="submit" className="btn btn-primary">
-        login
+        Create account
       </button>
     </form>
   );
