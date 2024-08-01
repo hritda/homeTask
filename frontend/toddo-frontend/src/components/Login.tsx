@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import {useOutletContext, useNavigate} from 'react-router-dom';
 import OutletContextType from "../types/OutletContextType";
+const apiURL = process.env.REACT_APP_API_URL;
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
       },
       body: JSON.stringify(payload)
     }
-    fetch(`http://localhost:1000/api/v1/login`,requestOptions)
+    fetch(`${apiURL}/api/v1/login`,requestOptions)
     .then((response)=>{
       if(response.ok){
       return response.json();}

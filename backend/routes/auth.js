@@ -26,10 +26,10 @@ router.put("/logout", authenticated,async (req, res) => {
         (updatedToken)=>{
                 if (updatedToken) {
                 res.status(200).json({message: "logged out successfully"})
-                  // Document updated successfully
+                 
                 } else {
                 res.status(400).json({message: "No auth token found"})
-                  // Handle case where document is not found
+                  
                 }
         }
         ).catch((err)=>{

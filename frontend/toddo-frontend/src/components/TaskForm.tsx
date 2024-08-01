@@ -2,7 +2,7 @@ import React,{useState} from "react";
 
 import { ITask } from "../types/Tasks";
 import { useNavigate , useParams} from "react-router-dom";
-
+const apiURL = process.env.REACT_APP_API_URL;
 const TaskForm = () => {
     let { id } = useParams();
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ const TaskForm = () => {
         headers: headers,
         body: JSON.stringify(payload),
       };
-        fetch(`http://localhost:1000/api/v2/task/${id}`, requestOptions)
+        fetch(`${apiURL}/api/v2/task/${id}`, requestOptions)
         .then( async (response) => await response.json())
         .then((data: ITask) => {
           console.log(data);

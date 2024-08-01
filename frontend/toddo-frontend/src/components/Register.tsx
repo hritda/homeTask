@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState, FormEvent } from "react";
 import { User } from "../types/User";
 import { useNavigate } from "react-router-dom";
 import { UserResp } from "../types/UserResp";
-
+const apiURL = process.env.REACT_APP_API_URL;
 const Register = () => {
     const navigate = useNavigate();
   const [user, setUser] = useState<User>({
@@ -23,7 +23,7 @@ const Register = () => {
       body: JSON.stringify(userData),
     };
 
-    fetch("http://localhost:1000/api/v1/register", requestOptions)
+    fetch(`${apiURL}/api/v1/register`, requestOptions)
       .then((resp) => {
         console.log("REPOSNE:", resp)
         if(!resp.ok){

@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import { IProject, IProjectResponse } from "../types/Projects";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Message from "../types/Message";
+const apiURL = process.env.REACT_APP_API_URL;
 type Inputs = {
   title: string;
 };
@@ -25,7 +26,7 @@ const Home = () => {
       method: "DELETE",
       headers: headers,
     };
-    fetch(`http://localhost:1000/api/v2/projects/${projectId}`, requestOptions)
+    fetch(`${apiURL}/api/v2/projects/${projectId}`, requestOptions)
       .then((response) => response.json())
       .then((data: Message) => {
         console.log(data.message);
@@ -49,10 +50,9 @@ const Home = () => {
       headers: headers,
       body: JSON.stringify(payload),
     };
-    fetch(`http://localhost:1000/api/v2/projects`, requestOptions)
+    fetch(`${apiURL}/api/v2/projects`, requestOptions)
       .then((response) => response.json())
       .then((data: IProject) => {
-       
         setRefetch(!refetch);
       })
       .catch((error) => {
@@ -68,7 +68,7 @@ const Home = () => {
   const modalShow = () => setShow(true);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn == true) {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       const token = JSON.parse(localStorage.getItem("token")!);
@@ -78,12 +78,13 @@ const Home = () => {
         method: "Get",
         headers: headers,
       };
-      fetch(`http://localhost:1000/api/v2/projects`, requestOptions)
+      fetch(`${apiURL}/api/v2/projects`, requestOptions)
         .then(async (response) => await response.json())
         .then((data: IProjectResponse) => {
           console.log(data.projects);
-          if(data.projects) {setProjects(data.projects);}
-          else{
+          if (data.projects) {
+            setProjects(data.projects);
+          } else {
             setProjects([]);
           }
         })
@@ -142,7 +143,11 @@ const Home = () => {
                   key={project._id}
                   className=" d-flex justify-content-around list-group-item"
                 >
-                  <Link style={{ flex: "0.5" }} to={{pathname:`/projects/${project._id}`}} state={{ title: project.title}}>
+                  <Link
+                    style={{ flex: "0.5" }}
+                    to={{ pathname: `/projects/${project._id}` }}
+                    state={{ title: project.title }}
+                  >
                     <span>{project.title}</span>
                   </Link>
                   <Link to={`/titleForm/${project._id}`}>

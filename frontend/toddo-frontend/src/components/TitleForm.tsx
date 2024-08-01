@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { IProject } from "../types/Projects";
 import { useNavigate , useParams} from "react-router-dom";
-
+const apiURL = process.env.REACT_APP_API_URL;
 const TitleForm = () => {
     let { id } = useParams();
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ const TitleForm = () => {
         headers: headers,
         body: JSON.stringify(payload),
       };
-        fetch(`http://localhost:1000/api/v2/projects/${id}`, requestOptions)
+        fetch(`${apiURL}/api/v2/projects/${id}`, requestOptions)
         .then( async (response) => await response.json())
         .then((data: IProject) => {
           console.log(data);

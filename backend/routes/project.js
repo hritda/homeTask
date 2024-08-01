@@ -7,7 +7,7 @@ const {Project, projectSchema} = require("../models/Project");
 const authenticated = require("../middleware/authMiddleware");
 const isAuthenticated = require('../middleware/authMiddleware');
 
-//prehook middleware or projects schema
+
 
 router.post("/projects", authenticated, async (req, res) => {
     const { title } = req.body;

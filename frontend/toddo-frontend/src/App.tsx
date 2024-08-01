@@ -4,7 +4,9 @@ import { Outlet, Link, useLocation  } from "react-router-dom";
 import { useState, useEffect } from "react";
 import OutletContextType from "./types/OutletContextType";
 import Message from "./types/Message";
+const apiURL = process.env.REACT_APP_API_URL;
 function App() {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   const logout = ()=>{
@@ -17,7 +19,7 @@ function App() {
       headers: headers,
     };
 
-    fetch(`http://localhost:1000/api/v1/logout`,requestOptions)
+    fetch(`${apiURL}/api/v1/logout`,requestOptions)
     .then((response)=> response.json())
     .then((data :Message) =>{
       localStorage.removeItem('token');
@@ -29,6 +31,7 @@ function App() {
 
   }
   useEffect(() => {
+    
     const token = localStorage.getItem("token");
     if(token===null){
       setIsLoggedIn(false);

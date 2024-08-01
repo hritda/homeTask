@@ -7,6 +7,7 @@ import OutletContextType from "../types/OutletContextType";
 import { ITask, ITaskResponse } from "../types/Tasks";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Message from "../types/Message";
+const apiURL = process.env.REACT_APP_API_URL;
 type Inputs = {
   description: string;
 };
@@ -34,7 +35,7 @@ const TodoList = () => {
       method: "DELETE",
       headers: headers,
     };
-    fetch(`http://localhost:1000/api/v2/task/${taskId}`, requestOptions)
+    fetch(`${apiURL}/api/v2/task/${taskId}`, requestOptions)
       .then((response) => response.json())
       .then((data: Message) => {
         console.log(data.message);
@@ -73,7 +74,7 @@ const TodoList = () => {
       headers: headers,
       body: JSON.stringify(payload),
     };
-    fetch(`http://localhost:1000/api/v2/task/status/${id}`, requestOptions)
+    fetch(`${apiURL}/api/v2/task/status/${id}`, requestOptions)
       .then((response) => response.json())
       .then((data: ITask) => {
         console.log(data);
@@ -98,7 +99,7 @@ const TodoList = () => {
         body: JSON.stringify(payload),
       };
 
-      fetch(`http://localhost:1000/api/v2/projects/${id}`, requestOptions)
+      fetch(`${apiURL}/api/v2/projects/${id}`, requestOptions)
         .then((response) => response.json())
         .then((data: ITask) => {
           console.log(data);
@@ -115,7 +116,7 @@ const TodoList = () => {
         headers: headers,
         body: JSON.stringify(payload),
       };
-      fetch(`http://localhost:1000/api/v2/task/${id}`, requestOptions)
+      fetch(`${apiURL}/api/v2/task/${id}`, requestOptions)
         .then((response) => response.json())
         .then((data: ITask) => {
           console.log(data);
@@ -173,7 +174,7 @@ const TodoList = () => {
         method: "Get",
         headers: headers,
       };
-      fetch(`http://localhost:1000/api/v2/projects/${id}`, requestOptions)
+      fetch(`${apiURL}/api/v2/projects/${id}`, requestOptions)
         .then(async (response) => await response.json())
         .then((data: ITaskResponse) => {
           if (data?._id) {

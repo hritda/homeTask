@@ -63,7 +63,7 @@ router.delete("/task/:id",isAuthenticated, async (req,res)=>{
 router.put("/task/:id", isAuthenticated, async (req, res) => {
   const taskId = new mongoose.Types.ObjectId(req.params['id']);
   const { description } = req.body;
-  await List.findByIdAndUpdate(taskId, { description: description }, { new: true }).then(
+  await List.findByIdAndUpdate(taskId, { description: description, updatedDate: Date.now()}, { new: true }).then(
       async (list) => { await res.status(200).json({ list }) });
 });
 
