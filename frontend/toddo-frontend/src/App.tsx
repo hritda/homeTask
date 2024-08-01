@@ -64,9 +64,7 @@ function App() {
         </div>
       </div>
       <Outlet
-       context={{
-       isLoggedIn,setIsLoggedIn
-      } as OutletContextType}
+       
       />
     </div>
   );

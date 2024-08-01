@@ -5,7 +5,7 @@ const apiURL = process.env.REACT_APP_API_URL;
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {isLoggedIn,setIsLoggedIn} = useOutletContext<OutletContextType>();
+
   const navigate = useNavigate();
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,9 +33,7 @@ const Login = () => {
     .then((data:any)=>{
       localStorage.setItem('token',JSON.stringify(data.token));
       alert("You have logged in!");
-      
-      setIsLoggedIn(true);
-      navigate("/");
+      navigate("/auth");
     })
     .catch((error)=>{
       console.log(error);

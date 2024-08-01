@@ -145,7 +145,7 @@ const Home = () => {
                 >
                   <Link
                     style={{ flex: "0.5" }}
-                    to={{ pathname: `/projects/${project._id}` }}
+                    to={{ pathname: `projects/${project._id}` }}
                     state={{ title: project.title }}
                   >
                     <span>{project.title}</span>
